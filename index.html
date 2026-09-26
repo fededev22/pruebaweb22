@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espacio de Viajes — EDV</title>
+  
+  <!-- Estilos CSS Unificados -->
+  <style>
+    :root {
+      --marfil: #FAEAD8;
+      --arena: #EEDFCB;
+      --piedra: #D9C6AE;
+      --azul-edv: #123F84;
+      --azul-marino: #0E2F63;
+      --font-editorial: 'Literaturnaya', 'Georgia', serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--marfil);
+      color: var(--azul-edv);
+      font-family: var(--font-sans);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    /* Header & Navegación Principal */
+    .header-edv {
+      background-color: var(--marfil);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 4rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--piedra);
+    }
+
+    .logo-container img {
+      height: 40px;
+      display: block;
+    }
+
+    .nav-menu ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: var(--azul-edv);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-menu a:hover {
+      color: var(--azul-marino);
+    }
+
+    /* Ajuste para aislar el Mega-Menú */
+    .dropdown-item {
+      position: relative;
+    }
+
+    .mega-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 750px;
+      background-color: var(--marfil);
+      border: 1px solid var(--piedra);
+      box-shadow: 0px 15px 35px rgba(18, 63, 132, 0.1);
+      padding: 1.5rem;
+      z-index: 1100;
+      border-radius: 4px;
+    }
+
+    /* El menú desplegable con imágenes SOLO se muestra sobre "Destinos y Experiencias" */
+    .dropdown-item:hover .mega-menu {
+      display: block;
+    }
+
+    .mega-menu-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+
+    .mega-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .mega-card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .mega-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .mega-card span {
+      font-family: var(--font-editorial);
+      font-size: 0.85rem;
+      color: var(--azul-marino);
+      text-align: center;
+    }
+
+    /* Botón destacado Hablemos */
+    .btn-hablemos {
+      background-color: var(--azul-edv);
+      color: var(--marfil) !important;
+      padding: 0.6rem 1.4rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease !important;
+    }
+
+    .btn-hablemos:hover {
+      background-color: var(--azul-marino) !important;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 6rem 2rem;
+      text-align: center;
+      background-color: var(--marfil);
+    }
+
+    .tag {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: var(--azul-edv);
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: var(--font-editorial);
+      font-size: 3.2rem;
+      color: var(--azul-marino);
+      max-width: 800px;
+      margin: 0 auto 1.5rem auto;
+      font-weight: normal;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2.5rem auto;
+      color: var(--azul-edv);
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--azul-edv);
+      color: var(--marfil);
+      padding: 0.9rem 2rem;
+      text-decoration: none;
+      border-radius: 30px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--azul-marino);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--azul-edv);
+      color: var(--azul-edv);
+      padding: 0.9rem 2rem;
+      text-decoration: none;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--azul-edv);
+      color: var(--marfil);
+    }
+
+    /* Sección de Destinos */
+    .destinos-section {
+      padding: 5rem 4rem;
+      background-color: #FAF7F2;
+      border-top: 1px solid var(--arena);
+    }
+
+    .destinos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .destino-card {
+      background-color: var(--marfil);
+      border: 1px solid var(--arena);
+      padding: 1.8rem;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .destino-card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .destino-card h3 {
+      font-family: var(--font-editorial);
+      font-size: 2rem;
+      margin: 1rem 0 0.5rem 0;
+      color: var(--azul-marino);
+      font-weight: normal;
+    }
+
+    .destino-items {
+      margin: 1.5rem 0;
+    }
+
+    .destino-item {
+      margin-bottom: 1.2rem;
+    }
+
+    .destino-item h4 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--azul-marino);
+      font-weight: 600;
+    }
+
+    .destino-item p {
+      margin: 0.3rem 0 0 0;
+      font-size: 0.9rem;
+      color: #4A4A4A;
+      line-height: 1.4;
+    }
+
+    /* Sección Reseñas */
+    .resenas-section {
+      background-color: var(--arena);
+      padding: 5rem 4rem;
+      text-align: center;
+    }
+
+    .resenas-section h2 {
+      font-family: var(--font-editorial);
+      font-size: 2.2rem;
+      color: var(--azul-marino);
+      font-weight: normal;
+      margin-top: 0.5rem;
+    }
+
+    .resenas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .resena-card {
+      background-color: var(--marfil);
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--piedra);
+      text-align: left;
+      border-radius: 4px;
+    }
+
+    .stars {
+      color: #D4AF37;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .resena-card p {
+      font-style: italic;
+      font-family: var(--font-editorial);
+      line-height: 1.6;
+      color: var(--azul-marino);
+      margin: 0;
+    }
+
+    /* Adaptación Mobile */
+    @media (max-width: 768px) {
+      .header-edv {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-menu ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .mega-menu {
+        width: 100vw;
+        left: 0;
+        transform: none;
+        position: relative;
+      }
+
+      .mega-menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .destinos-section, .resenas-section {
+        padding: 3rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN Y HEADER -->
+  <header class="header-edv">
+    <div class="logo-container">
+      <a href="https://pruebaweb183.lovable.app/">
+        <img src="https://pruebaweb183.lovable.app/favicon.ico" alt="Espacio de Viajes — EDV">
+      </a>
+    </div>
+    
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="https://pruebaweb183.lovable.app/">Inicio</a></li>
+        <li><a href="https://pruebaweb183.lovable.app/nosotros">Nosotros</a></li>
+        
+        <!-- Menú de Destinos con desplegable de fotos -->
+        <li class="dropdown-item">
+          <a href="https://pruebaweb183.lovable.app/experiencias" class="dropdown-toggle">Destinos y Experiencias</a>
+          <div class="mega-menu">
+            <div class="mega-menu-grid">
+              <a href="#argentina" class="mega-card">
+                <img src="https://images.unsplash.com/photo-1589553460732-58ef7a11d986?auto=format&fit=crop&w=600&q=80" alt="Argentina">
+                <span>Argentina</span>
+              </a>
+              <a href="#caribe" class="mega-card">
+                <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80" alt="Caribe & Brasil">
+                <span>Caribe & Brasil</span>
+              </a>
+              <a href="#europa" class="mega-card">
+                <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=600&q=80" alt="Europa">
+                <span>Europa</span>
+              </a>
+              <a href="#usa" class="mega-card">
+                <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=600&q=80" alt="Estados Unidos">
+                <span>Estados Unidos</span>
+              </a>
+              <a href="#asia" class="mega-card">
+                <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80" alt="Exóticos & Asia">
+                <span>Exóticos & Asia</span>
+              </a>
+            </div>
+          </div>
+        </li>
+        
+        <li><a href="https://pruebaweb183.lovable.app/resenas">Reseñas</a></li>
+        <li><a href="https://pruebaweb183.lovable.app/contacto">Contacto</a></li>
+        <li><a href="https://wa.me/5493417180619" class="btn-hablemos" target="_blank">Hablemos</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO / SECCIÓN INICIAL -->
+  <section class="hero">
+    <span class="tag">Espacio de Viajes — EDV</span>
+    <h1>Tu viaje empieza mucho antes de subir al avión.</h1>
+    <p>Contanos cómo soñás viajar. Nosotros transformamos esa idea en una experiencia pensada exclusivamente para vos.</p>
+    <div class="hero-actions">
+      <a href="#destinos" class="btn-secondary">Ver destinos</a>
+      <a href="https://wa.me/5493417180619" class="btn-primary" target="_blank">Planifiquemos tu viaje</a>
+    </div>
+  </section>
+
+  <!-- SECCIÓN DE DESTINOS DETALLADOS -->
+  <section id="destinos" class="destinos-section">
+    <div class="destinos-grid">
+      
+      <!-- ARGENTINA -->
+      <div id="argentina" class="destino-card">
+        <div>
+          <img src="https://images.unsplash.com/photo-1589553460732-58ef7a11d986?auto=format&fit=crop&w=600&q=80" alt="Argentina">
+          <span class="tag" style="margin-top: 1rem;">Naturaleza & Origen</span>
+          <h3>Argentina</h3>
+          <p>Escapadas, rutas gastronómicas y paisajes extraordinarios para redescubrir la inmensidad del país.</p>
+          <div class="destino-items">
+            <div class="destino-item">
+              <h4>📍 Bariloche & Patagonia</h4>
+              <p>Bosques milenarios, arquitectura alpina, gastronomía de autor y lagos cristalinos para desconectar en cualquier estación.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 Mendoza</h4>
+              <p>Rutas del vino exclusivas al pie de la Cordillera de los Andes, bodegas boutique y experiencias de alta cocina.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 El Calafate & Glaciares</h4>
+              <p>La majestuosidad del Glaciar Perito Moreno y navegaciones entre imponentes témpanos de hielo.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 Cataratas del Iguazú</h4>
+              <p>Una de las maravillas naturales del mundo inmersa en la selva misionera con senderos privados y paseos náuticos.</p>
+            </div>
+          </div>
+        </div>
+        <a href="https://wa.me/5493417180619?text=Hola,%20me%20interesa%20consultar%20por%20Argentina" class="btn-secondary" style="text-align: center; margin-top: 1rem;">Consultar esta región</a>
+      </div>
+
+      <!-- BRASIL & CARIBE -->
+      <div id="caribe" class="destino-card">
+        <div>
+          <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80" alt="Brasil y Caribe">
+          <span class="tag" style="margin-top: 1rem;">Sol & Descanso</span>
+          <h3>Brasil & Caribe</h3>
+          <p>Playas turquesas, serenidad, resorts seleccionados y experiencias pensadas para parejas o grupos.</p>
+          <div class="destino-items">
+            <div class="destino-item">
+              <h4>📍 Punta Cana & Bávaro</h4>
+              <p>Kilómetros de arena blanca, palmeras infinitas y resorts all-inclusive de categoría superior diseñados para el relax total.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 Río de Janeiro & Búzios</h4>
+              <p>La combinación perfecta entre sofisticación costera, encanto colonial y posadas frente al mar.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 Aruba & San Andrés</h4>
+              <p>Aguas cristalinas de siete colores, brisa constante, atardeceres mágicos y privacidad garantizada.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 Porto de Galinhas</h4>
+              <p>Piscinas naturales de agua tibia entre arrecifes de coral y calidez gastronómica del nordeste brasileño.</p>
+            </div>
+          </div>
+        </div>
+        <a href="https://wa.me/5493417180619?text=Hola,%20me%20interesa%20consultar%20por%20Caribe%20y%20Brasil" class="btn-secondary" style="text-align: center; margin-top: 1rem;">Consultar esta región</a>
+      </div>
+
+      <!-- EUROPA -->
+      <div id="europa" class="destino-card">
+        <div>
+          <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=600&q=80" alt="Europa">
+          <span class="tag" style="margin-top: 1rem;">Cultura & Historia</span>
+          <h3>Europa</h3>
+          <p>Rutas mediterráneas, ciudades históricas, arte, calles adoquinadas y el encanto de viajar a tu ritmo.</p>
+          <div class="destino-items">
+            <div class="destino-item">
+              <h4>📍 Italia & Costa Amalfitana</h4>
+              <p>Pueblos acantilados sobre el Mediterráneo, gastronomía tradicional y paseos en barco al atardecer.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 España & Andalucía</h4>
+              <p>Cultura, flamenco, arquitectura árabe, tapas en plazas históricas y la calidez del sur de Europa.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 Francia & París</h4>
+              <p>Paseos junto al Sena, museos icónicos, cafés con encanto y escapadas a los castillos del Valle del Loira.</p>
+            </div>
+          </div>
+        </div>
+        <a href="https://wa.me/5493417180619?text=Hola,%20me%20interesa%20consultar%20por%20Europa" class="btn-secondary" style="text-align: center; margin-top: 1rem;">Consultar esta región</a>
+      </div>
+
+      <!-- ESTADOS UNIDOS -->
+      <div id="usa" class="destino-card">
+        <div>
+          <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=600&q=80" alt="Estados Unidos">
+          <span class="tag" style="margin-top: 1rem;">Ciudades & Vanguardia</span>
+          <h3>Estados Unidos</h3>
+          <p>Metrópolis vibrantes, compras, entretenimiento de clase mundial y carreteras de ensueño.</p>
+          <div class="destino-items">
+            <div class="destino-item">
+              <h4>📍 Nueva York</h4>
+              <p>La energía inconfundible de Broadway, paseos por Central Park, arte de vanguardia y arquitectura icónica.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 Miami & Key West</h4>
+              <p>Diseño art déco, playas dinámicas, compras exclusivas y una conexión natural con los cayos de Florida.</p>
+            </div>
+          </div>
+        </div>
+        <a href="https://wa.me/5493417180619?text=Hola,%20me%20interesa%20consultar%20por%20Estados%20Unidos" class="btn-secondary" style="text-align: center; margin-top: 1rem;">Consultar esta región</a>
+      </div>
+
+      <!-- EXÓTICOS & ASIA -->
+      <div id="asia" class="destino-card">
+        <div>
+          <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80" alt="Exóticos y Asia">
+          <span class="tag" style="margin-top: 1rem;">Aventura & Espiritualidad</span>
+          <h3>Exóticos & Asia</h3>
+          <p>Tradiciones milenarias, templos dorados, paisajes futuristas y espiritualidad inmersiva.</p>
+          <div class="destino-items">
+            <div class="destino-item">
+              <h4>📍 Japón</h4>
+              <p>El contraste armonioso entre templos centenarios, jardines zen y tecnología futurista.</p>
+            </div>
+            <div class="destino-item">
+              <h4>📍 Tailandia</h4>
+              <p>Islas paradisíacas, santuarios, mercados flotantes y una cultura basada en la hospitalidad.</p>
+            </div>
+          </div>
+        </div>
+        <a href="https://wa.me/5493417180619?text=Hola,%20me%20interesa%20consultar%20por%20Destinos%20Ex%C3%B3ticos" class="btn-secondary" style="text-align: center; margin-top: 1rem;">Consultar esta región</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECCIÓN RESEÑAS -->
+  <section class="resenas-section">
+    <span class="tag">Experiencias Reales</span>
+    <h2>Lo que dicen quienes ya viajaron con nosotros</h2>
+    
+    <div class="resenas-grid">
+      <div class="resena-card">
+        <div class="stars">★★★★★</div>
+        <p>«¡Gracias Totales equipo! Mi primera experiencia viajando fuera del país sola, ¡pero super acompañada en todo el proceso! Un sueño hecho realidad. Ahora a planificar el próximo...»</p>
+      </div>
+
+      <div class="resena-card">
+        <div class="stars">★★★★★</div>
+        <p>«Gracias por el asesoramiento y por estar atentos y predispuestos previo y durante el viaje para acompañarme. La posada super recomendada, hermosa, y los traslados de 10, cumpliendo en los horarios establecidos.»</p>
+      </div>
+
+      <div class="resena-card">
+        <div class="stars">★★★★★</div>
+        <p>«Queremos resaltar la buena atención y predisposición ante la duda e información más mínima en los preparativos del viaje, durante y en la vuelta a nuestro hogar. Sin dudas volveremos a elegir Espacio de Viajes como nuestra agencia viajera. ¡Pasamos unas vacaciones espectaculares!»</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
